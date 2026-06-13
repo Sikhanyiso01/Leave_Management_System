@@ -1,6 +1,38 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <p class="lead">This Leave Management System respects your privacy. This page explains what personal data we collect, why we collect it, and how we protect and use it.</p>
+
+    <section class="mt-4 text-start d-inline-block" style="max-width:900px;">
+        <h2>What we collect</h2>
+        <ul>
+            <li>Employee details: full name, employee ID, department, job title, and work contact information.</li>
+            <li>Leave records: leave type, start/end dates, reason, supporting documents, and status.</li>
+            <li>Approval information: manager decisions, comments and timestamps.</li>
+            <li>System metadata and audit logs used for troubleshooting and compliance.</li>
+        </ul>
+
+        <h2>Why we collect this data</h2>
+        <p>We collect and process the information above to enable employees to submit leave requests, allow managers and HR to review and approve requests, keep accurate records for payroll and compliance, and provide reporting and analytics to authorized staff.</p>
+
+        <h2>How we use and share data</h2>
+        <p>Information is used only for legitimate business purposes related to leave administration and HR operations. Access is limited to authorized managers, HR personnel, and integrated payroll services where necessary. We do not sell personal data to third parties.</p>
+
+        <h2>Security</h2>
+        <p>We apply appropriate technical and organizational measures to protect personal data, including encrypted connections (HTTPS), role-based access control, secure storage practices, and audit logging. Access is granted on a least-privilege basis.</p>
+
+        <h2>Data retention</h2>
+        <p>Leave and personnel records are retained according to company policy and applicable laws. When data is no longer required it is archived or securely deleted.</p>
+
+        <h2>Your rights</h2>
+        <p>Where applicable law provides, you may request access to your personal data, request correction, request a copy in a portable format, or request deletion. To exercise these rights contact HR using the details below.</p>
+
+        <h2>Contact</h2>
+        <p>For questions about this privacy policy or to make a request regarding your personal data, contact: <strong>privacy@company.example</strong> or your Human Resources department.</p>
+
+        <p class="text-muted small mt-3">Last updated: [Date]</p>
+    </section>
+</div>
