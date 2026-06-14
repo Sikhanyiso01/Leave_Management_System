@@ -5,5 +5,7 @@ namespace Leave_Management_System.web.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
     {
+        public DbSet<LeaveType> LeaveTypes { get; set; }
     }
-}
+    
+    }
