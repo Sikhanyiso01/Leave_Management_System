@@ -143,7 +143,7 @@ public class LeaveTypesController : Controller
         var viewData = _mapper.Map<LeaveTypeReadOnlyViewModel>(leavetype);
 
 
-        return View(leavetype);
+        return View(viewData);
     }
 
     // POST: LEAVETYPES/Delete/5

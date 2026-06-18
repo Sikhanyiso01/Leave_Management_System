@@ -9,8 +9,8 @@ namespace Leave_Management_System.web.MappingProfiles
     {
         public AutoMapperProfile()
         {
-            CreateMap<LeaveType, LeaveTypeReadOnlyViewModel>();
-            //.ForMember(dest => dest.numberOfDays, opt=>opt.MapFrom(src=>src.numberOfDays));
+            CreateMap<LeaveType, LeaveTypeReadOnlyViewModel>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name));
 
             CreateMap<LeaveTypeCreateViewModel, LeaveType>();
             CreateMap<LeaveTypeEditViewModel, LeaveType >().ReverseMap();
