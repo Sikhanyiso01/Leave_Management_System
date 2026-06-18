@@ -10,4 +10,5 @@ namespace Leave_Management_System.web.Data
         public string name { get; set; }
         public int numberOfDays { get; set; }
     }
+    
 }
