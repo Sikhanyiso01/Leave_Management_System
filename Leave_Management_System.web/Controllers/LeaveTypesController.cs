@@ -2,20 +2,34 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Leave_Management_System.web.Data;
+using Leave_Management_System.web.Models.LeaveTypes;
+using AutoMapper;
 
 public class LeaveTypesController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
-    public LeaveTypesController(ApplicationDbContext context)
+    public LeaveTypesController(ApplicationDbContext context, IMapper mapper)
     {
         _context = context;
+        this._mapper = mapper;
     }
 
     // GET: LEAVETYPES
     public async Task<IActionResult> Index()    
     {
-        return View(await _context.LeaveTypes.ToListAsync());
+        var data = await _context.LeaveTypes.ToListAsync();
+
+        /* var viewData = data.Select(q => new IndexViewModel
+         {
+             Id = q.Id,
+             name = q.name,
+             numberOfDays = q.numberOfDays
+         });*/
+        //Use AutoMapper to map the data to the view model
+        var viewData = _mapper.Map<List<LeaveTypeReadOnlyViewModel>>(data);
+        return View(viewData);
     }
 
     // GET: LEAVETYPES/Details/5
@@ -33,7 +47,8 @@ public class LeaveTypesController : Controller
             return NotFound();
         }
 
-        return View(leavetype);
+        var viewData = _mapper.Map<LeaveTypeReadOnlyViewModel>(leavetype);
+        return View(viewData);
     }
 
     // GET: LEAVETYPES/Create
@@ -47,15 +62,16 @@ public class LeaveTypesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,name,numberOfDays")] LeaveType leavetype)
+    public async Task<IActionResult> Create(LeaveTypeCreateViewModel LeaveTypeCreate)
     {
         if (ModelState.IsValid)
         {
+            var leavetype = _mapper.Map<LeaveType>(LeaveTypeCreate);
             _context.Add(leavetype);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        return View(leavetype);
+        return View(LeaveTypeCreate);
     }
 
     // GET: LEAVETYPES/Edit/5
@@ -71,7 +87,8 @@ public class LeaveTypesController : Controller
         {
             return NotFound();
         }
-        return View(leavetype);
+        var viewData = _mapper.Map<LeaveTypeEditViewModel>(leavetype);
+        return View(viewData);
     }
 
     // POST: LEAVETYPES/Edit/5
@@ -79,9 +96,9 @@ public class LeaveTypesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,name,numberOfDays")] LeaveType leavetype)
+    public async Task<IActionResult> Edit(int? id, LeaveTypeEditViewModel leavetypeEdit)
     {
-        if (id != leavetype.Id)
+        if (id != leavetypeEdit.Id)
         {
             return NotFound();
         }
@@ -90,12 +107,13 @@ public class LeaveTypesController : Controller
         {
             try
             {
-                _context.Update(leavetype);
+                var leaveType = _mapper.Map<LeaveType>(leavetypeEdit);
+                _context.Update(leaveType);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LeaveTypeExists(leavetype.Id))
+                if (!LeaveTypeExists(leavetypeEdit.Id))
                 {
                     return NotFound();
                 }
@@ -106,7 +124,7 @@ public class LeaveTypesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        return View(leavetype);
+        return View(leavetypeEdit);
     }
 
     // GET: LEAVETYPES/Delete/5
@@ -123,6 +141,8 @@ public class LeaveTypesController : Controller
         {
             return NotFound();
         }
+        var viewData = _mapper.Map<LeaveTypeReadOnlyViewModel>(leavetype);
+
 
         return View(leavetype);
     }

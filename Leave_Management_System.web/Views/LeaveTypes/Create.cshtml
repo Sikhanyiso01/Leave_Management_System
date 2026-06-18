@@ -1,4 +1,4 @@
-@model Leave_Management_System.web.Data.LeaveType
+@model LeaveTypeCreateViewModel
 
 @{
     ViewData["Title"] = "Create Leave Type";
@@ -14,9 +14,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control" />
-                <span asp-validation-for="name" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <br/>
             <div class="form-group">
@@ -24,6 +24,7 @@
                 <input asp-for="numberOfDays" class="form-control" />
                 <span asp-validation-for="numberOfDays" class="text-danger"></span>
             </div>
+            <input type="hidden" name="id" value="12" />
             <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-success" />
