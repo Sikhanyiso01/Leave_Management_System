@@ -21,13 +21,7 @@ public class LeaveTypesController : Controller
     {
         var data = await _context.LeaveTypes.ToListAsync();
 
-        /* var viewData = data.Select(q => new IndexViewModel
-         {
-             Id = q.Id,
-             name = q.name,
-             numberOfDays = q.numberOfDays
-         });*/
-        //Use AutoMapper to map the data to the view model
+    
         var viewData = _mapper.Map<List<LeaveTypeReadOnlyViewModel>>(data);
         return View(viewData);
     }
