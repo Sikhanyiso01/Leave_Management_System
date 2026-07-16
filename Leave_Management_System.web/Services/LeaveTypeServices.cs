@@ -1,66 +1,74 @@
-public class LeaveTypeServices(ApplicationDbContext context, IMapper mapper) : ILeaveTypeServices
+using AutoMapper;
+using Leave_Management_System.web.Data;
+using Leave_Management_System.web.Models.LeaveTypes;
+using Microsoft.EntityFrameworkCore;
+
+namespace Leave_Management_System.web.Services
 {
-    private ApplicationDbContext _context;
-    private IMapper _mapper;
-
-    public async Task<List<LeaveTypeDto>> GetAllLeaveTypesAsync()
+    public class LeaveTypeServices(ApplicationDbContext context, IMapper mapper) : ILeaveTypesService
     {
-        //Gtetting data from the DB
-        var data = await _context.LeaveTypes.ToListAsync();
-        //converting the Datamodel to a viewModel via Mapper
-        var viewData = _mapper.Map<List<LeaveTypeReadOnlyViewModel>>(data);
-        return viewData;
-    }
+        private readonly ApplicationDbContext _context = context;
+        private readonly IMapper _mapper = mapper;
 
-    public async Task<T> Get<T?>(int id) where T : class
-    {
-        var data =  await_context.LeaveTypes.FirstOrDefaultAsync(X => x.Id == id);
-        if(data == null)
+        public async Task<List<LeaveTypeReadOnlyViewModel>> GetAll()
         {
-            return null;
+            var data = await _context.LeaveTypes.ToListAsync();
+            var viewData = _mapper.Map<List<LeaveTypeReadOnlyViewModel>>(data);
+            return viewData;
         }
 
-        var viewData = _mapper.Map<T>(data);
-        return viewData;
-    }
-
-    public async Task Delete(int id)
-    {
-        var data =  await_context.LeaveTypes.FirstOrDefaultAsync(X => x.Id == id);
-        if(data != null)
+        public async Task<T?> Get<T>(int id) where T : class
         {
-            _context.Remove(data);
-            await _context.SaveChangesAsync(); 
-        }
-    }
+            var data = await _context.LeaveTypes.FirstOrDefaultAsync(x => x.Id == id);
+            if (data == null)
+            {
+                return null;
+            }
 
-    public async Task Create(LeaveTypeCreateViewModel model)
-    {
+            var viewData = _mapper.Map<T>(data);
+            return viewData;
+        }
+
+        public async Task Remove(int id)
+        {
+            var data = await _context.LeaveTypes.FirstOrDefaultAsync(x => x.Id == id);
+            if (data != null)
+            {
+                _context.Remove(data);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Create(LeaveTypeCreateViewModel model)
+        {
             var leavetype = _mapper.Map<LeaveType>(model);
             _context.Add(leavetype);
             await _context.SaveChangesAsync();
-    }
+        }
 
-    public async Task Edit(LeaveTypeEditViewModel model)
-    {   
-                var leaveType = _mapper.Map<LeaveType>(model);
-                _context.Update(leaveType);
-                await _context.SaveChangesAsync();
-    }
-    private bool LeaveTypeExists(int? id)
-    {
-        return _context.LeaveTypes.Any(e => e.Id == id);
-    }
+        public async Task Edit(LeaveTypeEditViewModel model)
+        {
+            var leaveType = _mapper.Map<LeaveType>(model);
+            _context.Update(leaveType);
+            await _context.SaveChangesAsync();
+        }
 
-    private async Task<bool> CheckIfLeaveTypeNameExists( string name )
-    {
-        var lowercaseName = name.ToLower();
-        return await _context.LeaveTypes.AnyAsync(q => q.name.ToLower().Equals(lowercaseName));
-    }
-    private  async Task<bool> CheckIfLeaveTypeNameExistsForEdit(LeaveTypeEditViewModel leavetype)
-    {
-        var lowercaseName = leavetype.Name.ToLower();
-        return await _context.LeaveTypes.AnyAsync(q => q.name.ToLower().Equals(lowercaseName) && 
-        q.Id != leavetype.Id);
+        public bool LeaveTypeExists(int id)
+        {
+            return _context.LeaveTypes.Any(e => e.Id == id);
+        }
+
+        public async Task<bool> CheckIfLeaveTypeNameExists(string name)
+        {
+            var lowercaseName = name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.name.ToLower().Equals(lowercaseName));
+        }
+
+        public async Task<bool> CheckIfLeaveTypeNameExistsForEdit(LeaveTypeEditViewModel leavetype)
+        {
+            var lowercaseName = leavetype.Name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.name.ToLower().Equals(lowercaseName) &&
+                q.Id != leavetype.Id);
+        }
     }
 }

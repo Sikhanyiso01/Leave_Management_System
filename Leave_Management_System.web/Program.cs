@@ -1,4 +1,5 @@
  using Leave_Management_System.web.Data;
+using Leave_Management_System.web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -11,7 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddScoped<ILeaveTypesService, _LeaveTypesService>();
+builder.Services.AddScoped<ILeaveTypesService, LeaveTypeServices>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddMaps(Assembly.GetExecutingAssembly()));
 

@@ -12,6 +12,12 @@ namespace Leave_Management_System.web.Services
 
         Task<List<LeaveTypeReadOnlyViewModel>> GetAll();
 
+        bool LeaveTypeExists(int id);
+
+        Task<bool> CheckIfLeaveTypeNameExistsForEdit (LeaveTypeEditViewModel leavetypeEdit);
+
+        Task<bool> CheckIfLeaveTypeNameExists(string name);
+
         Task Remove(int id);
     }
 }
