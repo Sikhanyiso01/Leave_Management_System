@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Leave_Management_System.web.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCreateWithApplicationUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +32,9 @@ namespace Leave_Management_System.web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    DateOfBirth = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -169,6 +174,26 @@ namespace Leave_Management_System.web.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d", "a151414c-d7eb-4601-8968-2246b1b77ce0", "Administrator", "ADMINISTRATOR" },
+                    { "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e", "cc16869f-b1d3-4e44-b34e-70c6986814b3", "Employee", "EMPLOYEE" },
+                    { "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f", "4d086c25-2e79-41a0-8dca-f29d93f9a70d", "Supervisor", "SUPERVISOR" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a", 0, "2d03cd4e-045a-47cc-bb5e-647680599c1f", new DateOnly(1990, 1, 1), "admin@localhost.com", true, "System", "Admin", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEPYgszfSKKx6QgFuaa2+AQVEokIvgzjZwRC7hW9uybunUBksduZXvGwTD4oJybJu7g==", null, false, "9df08b58-7bc2-4d8a-812c-af984d793a45", false, "admin@localhost.com" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d", "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
